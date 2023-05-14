@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.exirium.pe.exiriumviewmodelkit'
+    namespace 'com.exirium.pe.app'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.exirium.pe.exiriumviewmodelkit"
+        applicationId "com.exirium.pe.app"
         minSdk 24
         targetSdk 33
         versionCode 1
