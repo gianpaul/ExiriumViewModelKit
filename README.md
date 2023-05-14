@@ -13,24 +13,60 @@ La biblioteca proporciona una clase BaseViewModel que se puede extender para cre
 Aquí te mostramos cómo utilizar BaseViewModel en tu aplicación:
 
 ``` kotlin
-class MyViewModel : BaseViewModel() {
+class MyViewModel (private val exampleUseCase: ExampleUseCase): BaseViewModel() {
+    private val _user = MutableStateFlow<User>(null)
+    val user = _user.asStateFlow()
+    
     init {
         registerField(MyFields::class.java)
     }
 
-    fun updateField(id: MyFields, newValue: Any?) {
-        onValueChanged(id, newValue)
-    }
-
-    fun getField(id: MyFields): Any? {
-        return getFieldValue(id)
+    fun updateUser() {
+        viewModelScope.launch {
+            _user.value = exampleUseCase.getUserByName(getFieldValue(FieldId.NAME))
+        }
     }
 }
 
-enum class MyFields {
-    FIELD_ONE,
-    FIELD_TWO,
-    //...
+enum class MyFields {  
+    NAME,
+    EMAIL,
+    SWITCH
+}
+```
+
+``` kotlin
+@Composable
+fun ExampleBaseViewModel(viewModel: MainViewModel = hiltViewModel()) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TextField(
+            value = viewModel.getFieldValue(FieldId.EMAIL) as? String ?: "",
+            onValueChange = { newValue -> viewModel.onValueChanged(FieldId.EMAIL, newValue) },
+            label = { Text("Label 1") })
+
+        TextField(
+            value = viewModel.getFieldValue(FieldId.NAME) as? String ?: "",
+            onValueChange = { newValue -> viewModel.onValueChanged(FieldId.NAME, newValue) },
+            label = { Text("Label 2") })
+
+        Switch(
+            checked = viewModel.getFieldValue(FieldId.SWITCH) as? Boolean ?: false,
+            onCheckedChange = { newValue -> viewModel.onValueChanged(FieldId.SWITCH, newValue) },
+            colors = SwitchDefaults.colors(checkedThumbColor = Color.Green, uncheckedThumbColor = Color.Gray)
+        )
+
+        Button(
+            onClick = {
+               viewModel.updateUser()
+            }) {
+            Text(text = "Click me")
+        }
+
+    }
 }
 ```
 
