@@ -69,6 +69,29 @@ fun ExampleBaseViewModel(viewModel: MainViewModel = hiltViewModel()) {
     }
 }
 ```
+## Importando la libreria
+ExiriumViewModelKit está alojada en JitPack, lo que significa que puedes agregar fácilmente la biblioteca a tu proyecto.
+
+Añade lo siguiente a tu archivo build.gradle a nivel de proyecto:
+
+```groovy
+allprojects {
+    repositories {
+        ...
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+
+Y luego, en tu archivo build.gradle a nivel de módulo, agrega la dependencia de la siguiente manera:
+
+```groovy
+dependencies {
+    implementation 'com.github.gianpaul:ExiriumViewModelKit:1.0.1'
+}
+```
+
+Esto te permitirá utilizar ExiriumViewModelKit en tu proyecto Android. Recuerda que puede ser necesario sincronizar tu proyecto con los archivos de Gradle después de agregar una nueva dependencia.
 
 ## Contribuciones
 Las contribuciones a ExiriumViewModelKit son bienvenidas. Si encuentras un problema o tienes una idea para mejorar la biblioteca, por favor, abre un issue o un pull request.
